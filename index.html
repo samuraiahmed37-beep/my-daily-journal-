@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Daily Journal</title>
-
-  <!-- ✅ Google AdSense script placed correctly -->
+  <!-- Google Search Console Verification -->
+  <meta name="google-site-verification" content="YOUR_META_CONTENT_HERE" />
+  
+  <!-- Google AdSense Script -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6066955436505606"
-      crossorigin="anonymous"></script>
+     crossorigin="anonymous"></script>
 
+  <title>Daily Journal</title>
   <style>
     body {
       background-color: #121212;
@@ -18,7 +20,9 @@
       align-items: center;
       padding: 20px;
     }
-    h1 { margin-bottom: 10px; }
+    h1 {
+      margin-bottom: 10px;
+    }
     .journal-input {
       width: 80%;
       margin: 10px 0;
@@ -36,7 +40,10 @@
       padding: 10px;
       border-radius: 10px;
     }
-    label { display: block; margin: 5px 0; }
+    label {
+      display: block;
+      margin: 5px 0;
+    }
     select {
       width: 100%;
       padding: 8px;
@@ -56,7 +63,10 @@
       font-size: 16px;
       margin: 5px;
     }
-    #history { margin-top: 20px; width: 80%; }
+    #history {
+      margin-top: 20px;
+      width: 80%;
+    }
     .entry {
       background: #1E1E1E;
       padding: 12px;
@@ -74,12 +84,39 @@
       padding: 5px 8px;
       font-size: 14px;
     }
-    .delete-btn { right: 8px; background: red; color: white; }
-    .edit-btn { right: 55px; background: orange; color: black; }
+    .delete-btn {
+      right: 8px;
+      background: red;
+      color: white;
+    }
+    .edit-btn {
+      right: 55px;
+      background: orange;
+      color: black;
+    }
+    /* Ad block spacing */
+    .ad-container {
+      margin: 20px 0;
+      width: 100%;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <h1>📝 Daily Journal</h1>
+
+  <!-- Google AdSense Ad Unit -->
+  <div class="ad-container">
+    <ins class="adsbygoogle"
+         style="display:block; text-align:center;"
+         data-ad-client="ca-pub-6066955436505606"
+         data-ad-slot="YOUR_AD_SLOT_ID"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
 
   <textarea class="journal-input" id="mood" placeholder="How are you feeling?"></textarea>
   <textarea class="journal-input" id="why" placeholder="What happened today?"></textarea>
@@ -183,8 +220,8 @@
 </html>
 
 
-    loadEntries();
   </script>
 </body>
 </html>
+
 
