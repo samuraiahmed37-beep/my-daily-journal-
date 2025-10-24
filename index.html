@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Daily Journal</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    .journal-input {
+      width: 80%;
+      margin: 10px 0;
+      padding: 10px;
+      background: #1E1E1E;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      resize: none;
+    }
+    .section {
+      width: 80%;
+      margin: 10px 0;
+      background: #1E1E1E;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    label {
+      display: block;
+      margin: 5px 0;
+    }
+    select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      background: #2b2b2b;
+      color: white;
+      margin-top: 5px;
+    }
+    button {
+      background: #2979ff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 5px;
+    }
+    #history {
+      margin-top: 20px;
+      width: 80%;
+    }
+    .entry {
+      background: #1E1E1E;
+      padding: 12px;
+      border-radius: 8px;
+      margin: 8px 0;
+      position: relative;
+      line-height: 1.6;
+    }
+    .delete-btn, .edit-btn {
+      position: absolute;
+      top: 8px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 5px 8px;
+      font-size: 14px;
+    }
+    .delete-btn {
+      right: 8px;
+      background: red;
+      color: white;
+    }
+    .edit-btn {
+      right: 55px;
+      background: orange;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+  <h1>📝 Daily Journal</h1>
+
+  <textarea class="journal-input" id="mood" placeholder="How are you feeling?"></textarea>
+  <textarea class="journal-input" id="why" placeholder="What happened today?"></textarea>
+  <textarea class="journal-input" id="wish" placeholder="What you haven't done"></textarea>
+  <textarea class="journal-input" id="prey" placeholder="How many times did you pray today? 🧎"></textarea>
+
+  <div class="section">
+    <label for="gym">Did you go to the gym today? 🏋️</label>
+    <select id="gym">
+      <option value="">-- Select an option --</option>
+      <option value="Yes">✅ Yes</option>
+      <option value="Rest">😌 Rest</option>
+      <option value="No">❌ No</option>
+    </select>
+  </div>
+
+  <button id="saveButton" onclick="saveEntry()">Save Entry</button>
+
+  <div id="history"></div>
+
+  <script>
+    let editIndex = null;
+
+    function saveEntry() {
+      let mood = document.getElementById('mood').value.trim();
+      let why = document.getElementById('why').value.trim();
+      let wish = document.getElementById('wish').value.trim();
+      let prey = document.getElementById('prey').value.trim();
+      let gym = document.getElementById('gym').value;
+
+      if (!mood && !why && !wish && !prey && !gym) {
+        alert("Please enter at least one field.");
+        return;
+      }
+
+      let entries = JSON.parse(localStorage.getItem('entries')) || [];
+
+      if (editIndex !== null) {
+        entries[editIndex] = { ...entries[editIndex], mood, why, wish, prey, gym };
+        editIndex = null;
+        document.getElementById('saveButton').textContent = "Save Entry";
+      } else {
+        let date = new Date().toLocaleString();
+        entries.unshift({date, mood, why, wish, prey, gym});
+      }
+
+      localStorage.setItem('entries', JSON.stringify(entries));
+      loadEntries();
+
+      document.getElementById('mood').value = "";
+      document.getElementById('why').value = "";
+      document.getElementById('wish').value = "";
+      document.getElementById('prey').value = "";
+      document.getElementById('gym').value = "";
+    }
+
+    function loadEntries() {
+      let entries = JSON.parse(localStorage.getItem('entries')) || [];
+      let historyDiv = document.getElementById('history');
+      historyDiv.innerHTML = "<h2>📖 History</h2>";
+
+      entries.forEach((e, index) => {
+        historyDiv.innerHTML += `
+          <div class="entry">
+            <button class="delete-btn" onclick="deleteEntry(${index})">❌</button>
+            <button class="edit-btn" onclick="editEntry(${index})">✏️</button>
+            <strong>${e.date}</strong><br>
+            ${e.mood ? `<b>Mood:</b> ${e.mood}<br>` : ""}
+            ${e.why ? `<b>Why:</b> ${e.why}<br>` : ""}
+            ${e.wish ? `<b>Wish:</b> ${e.wish}<br>` : ""}
+            ${e.prey ? `🧎 <b>Times prayed today:</b> ${e.prey}<br>` : ""}
+            ${e.gym ? `🏋️ <b>Gym:</b> ${e.gym}<br>` : ""}
+          </div>
+        `;
+      });
+    }
+
+    function deleteEntry(index) {
+      let entries = JSON.parse(localStorage.getItem('entries')) || [];
+      entries.splice(index, 1);
+      localStorage.setItem('entries', JSON.stringify(entries));
+      loadEntries();
+    }
+
+    function editEntry(index) {
+      let entries = JSON.parse(localStorage.getItem('entries')) || [];
+      let entry = entries[index];
+
+      document.getElementById('mood').value = entry.mood;
+      document.getElementById('why').value = entry.why;
+      document.getElementById('wish').value = entry.wish;
+      document.getElementById('prey').value = entry.prey;
+      document.getElementById('gym').value = entry.gym;
+      editIndex = index;
+      document.getElementById('saveButton').textContent = "Update Entry";
+    }
+
+    loadEntries();
+  </script>
+</body>
+</html>
